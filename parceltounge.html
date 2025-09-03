@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Parseltongue Translator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #111;
+      color: #eee;
+      padding: 2em;
+      max-width: 600px;
+      margin: auto;
+    }
+    input, button {
+      font-size: 1em;
+      padding: 0.5em;
+      margin-top: 1em;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #444;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #666;
+    }
+    #output {
+      margin-top: 2em;
+      font-size: 1.2em;
+      color: #9ef;
+      white-space: pre-wrap;
+      border-top: 1px solid #333;
+      padding-top: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐍 Parseltongue Translator</h1>
+  <input type="text" id="inputText" placeholder="Type your phrase...">
+  <button id="translateBtn">Translate</button>
+  <div id="output"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const syllableMap = {
+        A: 'Ahh', B: 'Brahh', C: 'Sskrahh', D: 'Drahh', E: 'Ehss',
+        F: 'Fahh', G: 'Grahh', H: 'Hisss', I: 'Issh', J: 'Jahh',
+        K: 'Krahh', L: 'Lissh', M: 'Mahh', N: 'Nahh', O: 'Oss',
+        P: 'Prahh', Q: 'Kwahh', R: 'Rassh', S: 'Sss', T: 'Thrahh',
+        U: 'Uzzh', V: 'Vrahh', W: 'Wahh', X: 'Zkrahh', Y: 'Yissh', Z: 'Zehh'
+      };
+
+      function translate() {
+        const input = document.getElementById("inputText").value.toUpperCase();
+        const wordLength = input.replace(/ /g, "").length;
+        const syllables = [];
+        let prev = "";
+
+        for (let char of input) {
+          if (char === " ") {
+            syllables.push(" / ");
+            prev = "";
+          } else if (syllableMap[char]) {
+            let syllable = syllableMap[char];
+            if (syllable !== prev) {
+              if (syllable === "Oss" || syllable === "Sss") {
+                const stretch = "s".repeat(wordLength > 6 ? 4 : wordLength > 4 ? 2 : 0);
+                syllable += stretch;
+              }
+              syllables.push(syllable);
+              prev = syllable;
+            }
+          }
+        }
+
+        document.getElementById("output").textContent = syllables.join(" ");
+      }
+
+      document.getElementById("translateBtn").addEventListener("click", translate);
+    });
+  </script>
+</body>
+</html>
