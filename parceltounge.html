@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Parseltongue Translator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -66,8 +67,11 @@
             prev = "";
           } else if (syllableMap[char]) {
             let syllable = syllableMap[char];
+
+            // Compress duplicates
             if (syllable !== prev) {
-              if (syllable === "Oss" || syllable === "Sss") {
+              // Elongate only the first instance of Oss or Sss
+              if ((syllable === "Oss" || syllable === "Sss") && prev !== syllable) {
                 const stretch = "s".repeat(wordLength > 6 ? 4 : wordLength > 4 ? 2 : 0);
                 syllable += stretch;
               }
